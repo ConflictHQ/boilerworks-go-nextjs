@@ -1,0 +1,66 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    ports:
+      - "8088:8088"
+    environment:
+      PORT: "8088"
+      DATABASE_URL: "postgres://boilerworks:boilerworks@postgres:5432/boilerworks?sslmode=disable"
+      REDIS_URL: "redis://redis:6379/0"
+      SESSION_KEY: "change-me-in-production-32-chars!"
+      ENVIRONMENT: "development"
+      FRONTEND_URL: "http://localhost:3004"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  ui:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3004:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: "http://localhost:8088"
+      API_URL: "http://api:8088"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5447:5432"
+    environment:
+      POSTGRES_DB: boilerworks
+      POSTGRES_USER: boilerworks
+      POSTGRES_PASSWORD: boilerworks
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U boilerworks"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6390:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:

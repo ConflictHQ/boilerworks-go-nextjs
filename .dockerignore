@@ -1,0 +1,14 @@
+.git
+.github
+.env
+.env.local
+local.env
+*.md
+!README.md
+docker/
+.DS_Store
+.idea/
+.vscode/
+tmp/
+frontend/node_modules/
+frontend/.next/
