@@ -15,8 +15,8 @@ cd docker && docker compose up -d --build
 # Frontend: http://localhost:3000
 
 # Local development
-make run              # Start Go API on :8088
-make frontend-dev     # Start Next.js on :3004
+make run              # Start Go API on :8000
+make frontend-dev     # Start Next.js on :3000
 ```
 
 **Default credentials:** `admin@boilerworks.dev` / `password`
@@ -49,10 +49,10 @@ make frontend-dev     # Start Next.js on :3004
 
 | Service | Port |
 |---------|------|
-| Go API | 8088 |
-| Next.js | 3004 |
-| PostgreSQL | 5447 |
-| Redis | 6390 |
+| Go API | 8000 |
+| Next.js | 3000 |
+| PostgreSQL | 5432 |
+| Redis | 6379 |
 
 ## Contributing
 
