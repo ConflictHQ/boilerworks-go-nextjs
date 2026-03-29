@@ -85,7 +85,7 @@ make docker-reset      # Reset with fresh volumes
 
 ## Ports
 
-- Go API: 8088
-- Next.js: 3004
-- PostgreSQL: 5447
-- Redis: 6390
+- Go API: 8000
+- Next.js: 3000
+- PostgreSQL: 5432
+- Redis: 6379

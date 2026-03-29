@@ -11,8 +11,8 @@ Go with Chi router as a REST API backend paired with Next.js 16 for teams that w
 ```bash
 # Docker (full stack)
 cd docker && docker compose up -d --build
-# API: http://localhost:8088
-# Frontend: http://localhost:3004
+# API: http://localhost:8000
+# Frontend: http://localhost:3000
 
 # Local development
 make run              # Start Go API on :8088

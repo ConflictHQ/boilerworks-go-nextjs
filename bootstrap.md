@@ -24,13 +24,13 @@ make frontend-dev
 ## Architecture
 
 ```
-Go API (Chi router, port 8088)
+Go API (Chi router, port 8000)
   |-- REST JSON API (/api/*)
   |-- Session auth (httpOnly cookies)
   |-- PostgreSQL 16 (pgx/v5)
   |-- Redis 7 (cache)
   |
-  +-- Next.js 16 (port 3004)
+  +-- Next.js 16 (port 3000)
         |-- App Router + TypeScript
         |-- Tailwind CSS (dark theme)
         |-- Sonner toasts
