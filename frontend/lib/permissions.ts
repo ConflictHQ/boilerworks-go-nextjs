@@ -1,8 +1,8 @@
 export const enum PermissionSlug {
-  ProductView = "products.view",
-  ProductCreate = "products.create",
-  ProductEdit = "products.edit",
-  ProductDelete = "products.delete",
+  ItemView = "items.view",
+  ItemCreate = "items.create",
+  ItemEdit = "items.edit",
+  ItemDelete = "items.delete",
   CategoryView = "categories.view",
   CategoryCreate = "categories.create",
   CategoryEdit = "categories.edit",

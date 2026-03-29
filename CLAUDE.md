@@ -65,8 +65,8 @@ make docker-reset      # Reset with fresh volumes
 - `POST /api/auth/logout` -- logout
 - `GET /api/auth/me` -- current user + permissions
 - `GET /api/dashboard` -- dashboard stats
-- `GET/POST /api/products` -- list/create
-- `GET/PUT/DELETE /api/products/:uuid` -- get/update/delete
+- `GET/POST /api/items` -- list/create
+- `GET/PUT/DELETE /api/items/:uuid` -- get/update/delete
 - `GET/POST /api/categories` -- list/create
 - `GET/PUT/DELETE /api/categories/:uuid` -- get/update/delete
 - `GET/POST /api/forms` -- list/create definitions

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 
-export default function NewProductPage() {
+export default function NewItemPage() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -17,16 +17,16 @@ export default function NewProductPage() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await api.post("/api/products", {
+      await api.post("/api/items", {
         name,
         description,
         price: parseFloat(price) || 0,
         status,
       });
-      toast.success("Product created");
-      router.push("/products");
+      toast.success("Item created");
+      router.push("/items");
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Failed to create product");
+      toast.error(e instanceof Error ? e.message : "Failed to create item");
     } finally {
       setSubmitting(false);
     }
@@ -35,9 +35,9 @@ export default function NewProductPage() {
   return (
     <div className="flex flex-1 flex-col gap-6 p-6">
       <div>
-        <h1 className="text-xl font-semibold">New Product</h1>
+        <h1 className="text-xl font-semibold">New Item</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Create a new product.
+          Create a new item.
         </p>
       </div>
       <div className="border-t border-border" />
@@ -89,7 +89,7 @@ export default function NewProductPage() {
             disabled={submitting}
             className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
-            {submitting ? "Creating..." : "Create Product"}
+            {submitting ? "Creating..." : "Create Item"}
           </button>
           <button
             type="button"

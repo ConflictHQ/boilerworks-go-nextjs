@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 
-interface Product {
+interface Item {
   uuid: string;
   name: string;
   description: string;
@@ -14,11 +14,11 @@ interface Product {
   category_id?: string;
 }
 
-export default function EditProductPage() {
+export default function EditItemPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
-  const [product, setProduct] = useState<Product | null>(null);
+  const [item, setItem] = useState<Item | null>(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -27,9 +27,9 @@ export default function EditProductPage() {
 
   useEffect(() => {
     api
-      .get<Product>(`/api/products/${id}`)
+      .get<Item>(`/api/items/${id}`)
       .then((p) => {
-        setProduct(p);
+        setItem(p);
         setName(p.name);
         setDescription(p.description);
         setPrice(p.price.toString());
@@ -42,23 +42,23 @@ export default function EditProductPage() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await api.put(`/api/products/${id}`, {
+      await api.put(`/api/items/${id}`, {
         name,
         description,
         price: parseFloat(price) || 0,
         status,
-        category_id: product?.category_id,
+        category_id: item?.category_id,
       });
-      toast.success("Product updated");
-      router.push("/products");
+      toast.success("Item updated");
+      router.push("/items");
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Failed to update product");
+      toast.error(e instanceof Error ? e.message : "Failed to update item");
     } finally {
       setSubmitting(false);
     }
   };
 
-  if (!product) {
+  if (!item) {
     return (
       <div className="p-6 text-sm text-muted-foreground">Loading...</div>
     );
@@ -67,9 +67,9 @@ export default function EditProductPage() {
   return (
     <div className="flex flex-1 flex-col gap-6 p-6">
       <div>
-        <h1 className="text-xl font-semibold">Edit Product</h1>
+        <h1 className="text-xl font-semibold">Edit Item</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Update product details.
+          Update item details.
         </p>
       </div>
       <div className="border-t border-border" />

@@ -36,9 +36,9 @@ describe("api client", () => {
       json: async () => ({ ok: true }),
     });
 
-    await api.post("/api/products", { name: "Widget" });
+    await api.post("/api/items", { name: "Widget" });
     expect(mockFetch).toHaveBeenCalledWith(
-      "/api/products",
+      "/api/items",
       expect.objectContaining({
         method: "POST",
         body: JSON.stringify({ name: "Widget" }),
@@ -53,9 +53,9 @@ describe("api client", () => {
       json: async () => ({ ok: true }),
     });
 
-    await api.put("/api/products/123", { name: "Updated" });
+    await api.put("/api/items/123", { name: "Updated" });
     expect(mockFetch).toHaveBeenCalledWith(
-      "/api/products/123",
+      "/api/items/123",
       expect.objectContaining({
         method: "PUT",
       }),
@@ -69,9 +69,9 @@ describe("api client", () => {
       json: async () => ({ ok: true }),
     });
 
-    await api.delete("/api/products/123");
+    await api.delete("/api/items/123");
     expect(mockFetch).toHaveBeenCalledWith(
-      "/api/products/123",
+      "/api/items/123",
       expect.objectContaining({
         method: "DELETE",
       }),

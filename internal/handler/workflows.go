@@ -318,11 +318,11 @@ func (h *WorkflowsHandler) TransitionInstance(w http.ResponseWriter, r *http.Req
 }
 
 func (h *WorkflowsHandler) Dashboard(w http.ResponseWriter, r *http.Request) {
-	productCounts, _ := h.workflows.CountDefinitions(r.Context())
+	itemCounts, _ := h.workflows.CountDefinitions(r.Context())
 	instanceCount, _ := h.workflows.CountInstances(r.Context())
 
 	writeOK(w, map[string]interface{}{
-		"workflow_definitions": productCounts,
+		"workflow_definitions": itemCounts,
 		"workflow_instances":   instanceCount,
 	})
 }

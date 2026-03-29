@@ -9,7 +9,7 @@ import (
 )
 
 func TestRequirePermissionGranted(t *testing.T) {
-	perms := []string{"products.view", "products.create", "categories.view"}
+	perms := []string{"items.view", "items.create", "categories.view"}
 	ctx := context.WithValue(context.Background(), PermissionsContextKey, perms)
 
 	inner := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -17,9 +17,9 @@ func TestRequirePermissionGranted(t *testing.T) {
 		w.Write([]byte(`{"ok":true}`))
 	})
 
-	handler := RequirePermission("products.view")(inner)
+	handler := RequirePermission("items.view")(inner)
 
-	req := httptest.NewRequest(http.MethodGet, "/api/products", nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/items", nil)
 	req = req.WithContext(ctx)
 	w := httptest.NewRecorder()
 
@@ -32,16 +32,16 @@ func TestRequirePermissionGranted(t *testing.T) {
 
 func TestRequirePermissionDenied(t *testing.T) {
 	// Viewer permissions — no create or delete
-	perms := []string{"products.view", "categories.view"}
+	perms := []string{"items.view", "categories.view"}
 	ctx := context.WithValue(context.Background(), PermissionsContextKey, perms)
 
 	inner := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		t.Fatal("inner handler should not be called when permission denied")
 	})
 
-	handler := RequirePermission("products.create")(inner)
+	handler := RequirePermission("items.create")(inner)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/products", nil)
+	req := httptest.NewRequest(http.MethodPost, "/api/items", nil)
 	req = req.WithContext(ctx)
 	w := httptest.NewRecorder()
 
@@ -59,16 +59,16 @@ func TestRequirePermissionDenied(t *testing.T) {
 }
 
 func TestRequirePermissionDeleteDenied(t *testing.T) {
-	perms := []string{"products.view", "categories.view"}
+	perms := []string{"items.view", "categories.view"}
 	ctx := context.WithValue(context.Background(), PermissionsContextKey, perms)
 
 	inner := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		t.Fatal("inner handler should not be called")
 	})
 
-	handler := RequirePermission("products.delete")(inner)
+	handler := RequirePermission("items.delete")(inner)
 
-	req := httptest.NewRequest(http.MethodDelete, "/api/products/some-uuid", nil)
+	req := httptest.NewRequest(http.MethodDelete, "/api/items/some-uuid", nil)
 	req = req.WithContext(ctx)
 	w := httptest.NewRecorder()
 
@@ -85,9 +85,9 @@ func TestRequirePermissionNoPermissions(t *testing.T) {
 		t.Fatal("inner handler should not be called")
 	})
 
-	handler := RequirePermission("products.view")(inner)
+	handler := RequirePermission("items.view")(inner)
 
-	req := httptest.NewRequest(http.MethodGet, "/api/products", nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/items", nil)
 	w := httptest.NewRecorder()
 
 	handler.ServeHTTP(w, req)

@@ -39,7 +39,7 @@ func New(pool *pgxpool.Pool, cfg *config.Config) *Server {
 	userQ := queries.NewUserQueries(pool)
 	sessionQ := queries.NewSessionQueries(pool)
 	categoryQ := queries.NewCategoryQueries(pool)
-	productQ := queries.NewProductQueries(pool)
+	itemQ := queries.NewItemQueries(pool)
 	formQ := queries.NewFormQueries(pool)
 	workflowQ := queries.NewWorkflowQueries(pool)
 
@@ -51,14 +51,14 @@ func New(pool *pgxpool.Pool, cfg *config.Config) *Server {
 	// Handlers
 	healthH := handler.NewHealthHandler()
 	authH := handler.NewAuthHandler(authSvc)
-	dashboardH := handler.NewDashboardHandler(productQ, categoryQ, formQ, workflowQ)
-	productsH := handler.NewProductsHandler(productQ, categoryQ)
+	dashboardH := handler.NewDashboardHandler(itemQ, categoryQ, formQ, workflowQ)
+	itemsH := handler.NewItemsHandler(itemQ, categoryQ)
 	categoriesH := handler.NewCategoriesHandler(categoryQ)
 	formsH := handler.NewFormsHandler(formQ, formSvc)
 	workflowsH := handler.NewWorkflowsHandler(workflowQ, workflowSvc)
 
 	s := &Server{Router: r, pool: pool}
-	s.registerRoutes(r, authSvc, healthH, authH, dashboardH, productsH, categoriesH, formsH, workflowsH)
+	s.registerRoutes(r, authSvc, healthH, authH, dashboardH, itemsH, categoriesH, formsH, workflowsH)
 
 	return s
 }

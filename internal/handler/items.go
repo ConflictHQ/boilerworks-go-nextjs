@@ -12,16 +12,16 @@ import (
 	"github.com/google/uuid"
 )
 
-type ProductsHandler struct {
-	products   *queries.ProductQueries
+type ItemsHandler struct {
+	items   *queries.ItemQueries
 	categories *queries.CategoryQueries
 }
 
-func NewProductsHandler(products *queries.ProductQueries, categories *queries.CategoryQueries) *ProductsHandler {
-	return &ProductsHandler{products: products, categories: categories}
+func NewItemsHandler(items *queries.ItemQueries, categories *queries.CategoryQueries) *ItemsHandler {
+	return &ItemsHandler{items: items, categories: categories}
 }
 
-type productRequest struct {
+type itemRequest struct {
 	Name        string  `json:"name"`
 	Description string  `json:"description"`
 	Price       float64 `json:"price"`
@@ -29,7 +29,7 @@ type productRequest struct {
 	CategoryID  *string `json:"category_id,omitempty"`
 }
 
-func (h *ProductsHandler) List(w http.ResponseWriter, r *http.Request) {
+func (h *ItemsHandler) List(w http.ResponseWriter, r *http.Request) {
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 	if page < 1 {
 		page = 1
@@ -40,48 +40,48 @@ func (h *ProductsHandler) List(w http.ResponseWriter, r *http.Request) {
 	}
 	offset := (page - 1) * perPage
 
-	products, total, err := h.products.List(r.Context(), perPage, offset)
+	items, total, err := h.items.List(r.Context(), perPage, offset)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "Failed to list products")
+		writeError(w, http.StatusInternalServerError, "Failed to list items")
 		return
 	}
 
-	if products == nil {
-		products = []model.Product{}
+	if items == nil {
+		items = []model.Item{}
 	}
 
 	writeOK(w, map[string]interface{}{
-		"products": products,
+		"items": items,
 		"total":    total,
 		"page":     page,
 		"per_page": perPage,
 	})
 }
 
-func (h *ProductsHandler) Get(w http.ResponseWriter, r *http.Request) {
+func (h *ItemsHandler) Get(w http.ResponseWriter, r *http.Request) {
 	uid, err := uuid.Parse(chi.URLParam(r, "uuid"))
 	if err != nil {
 		writeError(w, http.StatusBadRequest, "Invalid UUID")
 		return
 	}
 
-	product, err := h.products.GetByUUID(r.Context(), uid)
+	item, err := h.items.GetByUUID(r.Context(), uid)
 	if err != nil {
-		writeError(w, http.StatusNotFound, "Product not found")
+		writeError(w, http.StatusNotFound, "Item not found")
 		return
 	}
 
-	writeOK(w, product)
+	writeOK(w, item)
 }
 
-func (h *ProductsHandler) Create(w http.ResponseWriter, r *http.Request) {
+func (h *ItemsHandler) Create(w http.ResponseWriter, r *http.Request) {
 	user := middleware.GetUser(r.Context())
 	if user == nil {
 		writeError(w, http.StatusUnauthorized, "Authentication required")
 		return
 	}
 
-	var req productRequest
+	var req itemRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "Invalid request body")
 		return
@@ -108,16 +108,16 @@ func (h *ProductsHandler) Create(w http.ResponseWriter, r *http.Request) {
 		categoryID = &id
 	}
 
-	product, err := h.products.Create(r.Context(), req.Name, req.Description, req.Price, req.Status, categoryID, user.ID)
+	item, err := h.items.Create(r.Context(), req.Name, req.Description, req.Price, req.Status, categoryID, user.ID)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "Failed to create product")
+		writeError(w, http.StatusInternalServerError, "Failed to create item")
 		return
 	}
 
-	writeCreated(w, product)
+	writeCreated(w, item)
 }
 
-func (h *ProductsHandler) Update(w http.ResponseWriter, r *http.Request) {
+func (h *ItemsHandler) Update(w http.ResponseWriter, r *http.Request) {
 	user := middleware.GetUser(r.Context())
 	if user == nil {
 		writeError(w, http.StatusUnauthorized, "Authentication required")
@@ -130,7 +130,7 @@ func (h *ProductsHandler) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var req productRequest
+	var req itemRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "Invalid request body")
 		return
@@ -153,24 +153,24 @@ func (h *ProductsHandler) Update(w http.ResponseWriter, r *http.Request) {
 		categoryID = &id
 	}
 
-	product, err := h.products.Update(r.Context(), uid, req.Name, req.Description, req.Price, req.Status, categoryID, user.ID)
+	item, err := h.items.Update(r.Context(), uid, req.Name, req.Description, req.Price, req.Status, categoryID, user.ID)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "Failed to update product")
+		writeError(w, http.StatusInternalServerError, "Failed to update item")
 		return
 	}
 
-	writeOK(w, product)
+	writeOK(w, item)
 }
 
-func (h *ProductsHandler) Delete(w http.ResponseWriter, r *http.Request) {
+func (h *ItemsHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	uid, err := uuid.Parse(chi.URLParam(r, "uuid"))
 	if err != nil {
 		writeError(w, http.StatusBadRequest, "Invalid UUID")
 		return
 	}
 
-	if err := h.products.Delete(r.Context(), uid); err != nil {
-		writeError(w, http.StatusInternalServerError, "Failed to delete product")
+	if err := h.items.Delete(r.Context(), uid); err != nil {
+		writeError(w, http.StatusInternalServerError, "Failed to delete item")
 		return
 	}
 

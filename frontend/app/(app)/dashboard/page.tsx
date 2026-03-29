@@ -5,7 +5,7 @@ import { api } from "@/lib/api";
 import { Package, FolderTree, FileText, GitBranch } from "lucide-react";
 
 interface DashboardData {
-  products_by_status: Record<string, number>;
+  items_by_status: Record<string, number>;
   category_count: number;
   form_count: number;
   submission_count: number;
@@ -57,8 +57,8 @@ export default function DashboardPage() {
     );
   }
 
-  const totalProducts = data
-    ? Object.values(data.products_by_status).reduce((a, b) => a + b, 0)
+  const totalItems = data
+    ? Object.values(data.items_by_status).reduce((a, b) => a + b, 0)
     : 0;
 
   return (
@@ -71,7 +71,7 @@ export default function DashboardPage() {
       </div>
       <div className="border-t border-border" />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Products" value={totalProducts} icon={Package} />
+        <StatCard title="Items" value={totalItems} icon={Package} />
         <StatCard
           title="Categories"
           value={data?.category_count ?? 0}
@@ -92,13 +92,13 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="rounded-xl border border-border bg-card p-6">
             <h3 className="mb-4 text-sm font-medium text-muted-foreground">
-              Products by Status
+              Items by Status
             </h3>
-            {Object.entries(data.products_by_status).length === 0 ? (
-              <p className="text-sm text-muted-foreground">No products yet.</p>
+            {Object.entries(data.items_by_status).length === 0 ? (
+              <p className="text-sm text-muted-foreground">No items yet.</p>
             ) : (
               <div className="space-y-2">
-                {Object.entries(data.products_by_status).map(
+                {Object.entries(data.items_by_status).map(
                   ([status, count]) => (
                     <div
                       key={status}

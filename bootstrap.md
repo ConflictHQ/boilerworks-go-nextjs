@@ -1,7 +1,7 @@
 # Boilerworks Go + Next.js -- Bootstrap
 
 > Go backend with Chi router + Next.js 16 frontend. REST API with session-based auth,
-> group-based permissions, Products/Categories CRUD, Forms engine, Workflow engine.
+> group-based permissions, Items/Categories CRUD, Forms engine, Workflow engine.
 
 See the [Boilerworks Catalogue](../primers/CATALOGUE.md) for philosophy and universal patterns.
 

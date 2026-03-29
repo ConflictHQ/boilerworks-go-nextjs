@@ -6,8 +6,8 @@ describe("routeLabels", () => {
     expect(routeLabels.dashboard).toBe("Dashboard");
   });
 
-  it("contains products label", () => {
-    expect(routeLabels.products).toBe("Products");
+  it("contains items label", () => {
+    expect(routeLabels.items).toBe("Items");
   });
 
   it("contains categories label", () => {

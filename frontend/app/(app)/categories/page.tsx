@@ -45,7 +45,7 @@ export default function CategoriesPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold">Categories</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Manage product categories.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Manage item categories.</p>
         </div>
         <Link
           href="/categories/new"

@@ -13,11 +13,11 @@ import (
 	"github.com/google/uuid"
 )
 
-func TestProductsCreateNoAuth(t *testing.T) {
-	h := NewProductsHandler(nil, nil)
+func TestItemsCreateNoAuth(t *testing.T) {
+	h := NewItemsHandler(nil, nil)
 
-	payload := `{"name":"Test Product","price":9.99}`
-	req := httptest.NewRequest(http.MethodPost, "/api/products", bytes.NewBufferString(payload))
+	payload := `{"name":"Test Item","price":9.99}`
+	req := httptest.NewRequest(http.MethodPost, "/api/items", bytes.NewBufferString(payload))
 	w := httptest.NewRecorder()
 
 	// No user in context
@@ -28,14 +28,14 @@ func TestProductsCreateNoAuth(t *testing.T) {
 	}
 }
 
-func TestProductsCreateMissingName(t *testing.T) {
-	h := NewProductsHandler(nil, nil)
+func TestItemsCreateMissingName(t *testing.T) {
+	h := NewItemsHandler(nil, nil)
 
 	user := &model.User{ID: uuid.New(), Name: "Admin", Email: "admin@test.com"}
 	ctx := context.WithValue(context.Background(), middleware.UserContextKey, user)
 
 	payload := `{"name":"","price":9.99}`
-	req := httptest.NewRequest(http.MethodPost, "/api/products", bytes.NewBufferString(payload))
+	req := httptest.NewRequest(http.MethodPost, "/api/items", bytes.NewBufferString(payload))
 	req = req.WithContext(ctx)
 	w := httptest.NewRecorder()
 
@@ -58,13 +58,13 @@ func TestProductsCreateMissingName(t *testing.T) {
 	}
 }
 
-func TestProductsCreateInvalidBody(t *testing.T) {
-	h := NewProductsHandler(nil, nil)
+func TestItemsCreateInvalidBody(t *testing.T) {
+	h := NewItemsHandler(nil, nil)
 
 	user := &model.User{ID: uuid.New(), Name: "Admin", Email: "admin@test.com"}
 	ctx := context.WithValue(context.Background(), middleware.UserContextKey, user)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/products", bytes.NewBufferString("not json"))
+	req := httptest.NewRequest(http.MethodPost, "/api/items", bytes.NewBufferString("not json"))
 	req = req.WithContext(ctx)
 	w := httptest.NewRecorder()
 
@@ -75,12 +75,12 @@ func TestProductsCreateInvalidBody(t *testing.T) {
 	}
 }
 
-func TestProductsGetInvalidUUID(t *testing.T) {
-	h := NewProductsHandler(nil, nil)
+func TestItemsGetInvalidUUID(t *testing.T) {
+	h := NewItemsHandler(nil, nil)
 
 	// Chi URL params are extracted from the request context via chi.URLParam.
 	// Without chi routing, URLParam returns "". uuid.Parse("") fails → 400.
-	req := httptest.NewRequest(http.MethodGet, "/api/products/not-a-uuid", nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/items/not-a-uuid", nil)
 	w := httptest.NewRecorder()
 
 	h.Get(w, req)
@@ -90,11 +90,11 @@ func TestProductsGetInvalidUUID(t *testing.T) {
 	}
 }
 
-func TestProductsUpdateNoAuth(t *testing.T) {
-	h := NewProductsHandler(nil, nil)
+func TestItemsUpdateNoAuth(t *testing.T) {
+	h := NewItemsHandler(nil, nil)
 
 	payload := `{"name":"Updated","price":19.99}`
-	req := httptest.NewRequest(http.MethodPut, "/api/products/"+uuid.New().String(), bytes.NewBufferString(payload))
+	req := httptest.NewRequest(http.MethodPut, "/api/items/"+uuid.New().String(), bytes.NewBufferString(payload))
 	w := httptest.NewRecorder()
 
 	h.Update(w, req)
@@ -104,10 +104,10 @@ func TestProductsUpdateNoAuth(t *testing.T) {
 	}
 }
 
-func TestProductsDeleteInvalidUUID(t *testing.T) {
-	h := NewProductsHandler(nil, nil)
+func TestItemsDeleteInvalidUUID(t *testing.T) {
+	h := NewItemsHandler(nil, nil)
 
-	req := httptest.NewRequest(http.MethodDelete, "/api/products/bad-uuid", nil)
+	req := httptest.NewRequest(http.MethodDelete, "/api/items/bad-uuid", nil)
 	w := httptest.NewRecorder()
 
 	h.Delete(w, req)
@@ -117,8 +117,8 @@ func TestProductsDeleteInvalidUUID(t *testing.T) {
 	}
 }
 
-func TestProductsUpdateMissingName(t *testing.T) {
-	h := NewProductsHandler(nil, nil)
+func TestItemsUpdateMissingName(t *testing.T) {
+	h := NewItemsHandler(nil, nil)
 
 	user := &model.User{ID: uuid.New(), Name: "Admin", Email: "admin@test.com"}
 	ctx := context.WithValue(context.Background(), middleware.UserContextKey, user)
@@ -129,7 +129,7 @@ func TestProductsUpdateMissingName(t *testing.T) {
 	// this will return 400 for invalid UUID before we hit name validation.
 	// Instead, test with invalid body.
 	payload := `{"name":"","price":19.99}`
-	req := httptest.NewRequest(http.MethodPut, "/api/products/some-uuid", bytes.NewBufferString(payload))
+	req := httptest.NewRequest(http.MethodPut, "/api/items/some-uuid", bytes.NewBufferString(payload))
 	req = req.WithContext(ctx)
 	w := httptest.NewRecorder()
 

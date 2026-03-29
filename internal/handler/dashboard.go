@@ -7,20 +7,20 @@ import (
 )
 
 type DashboardHandler struct {
-	products   *queries.ProductQueries
+	items   *queries.ItemQueries
 	categories *queries.CategoryQueries
 	forms      *queries.FormQueries
 	workflows  *queries.WorkflowQueries
 }
 
 func NewDashboardHandler(
-	products *queries.ProductQueries,
+	items *queries.ItemQueries,
 	categories *queries.CategoryQueries,
 	forms *queries.FormQueries,
 	workflows *queries.WorkflowQueries,
 ) *DashboardHandler {
 	return &DashboardHandler{
-		products:   products,
+		items:   items,
 		categories: categories,
 		forms:      forms,
 		workflows:  workflows,
@@ -28,7 +28,7 @@ func NewDashboardHandler(
 }
 
 func (h *DashboardHandler) Dashboard(w http.ResponseWriter, r *http.Request) {
-	productCounts, _ := h.products.CountByStatus(r.Context())
+	itemCounts, _ := h.items.CountByStatus(r.Context())
 	categoryCount, _ := h.categories.Count(r.Context())
 	formCount, _ := h.forms.CountDefinitions(r.Context())
 	submissionCount, _ := h.forms.CountSubmissions(r.Context())
@@ -36,7 +36,7 @@ func (h *DashboardHandler) Dashboard(w http.ResponseWriter, r *http.Request) {
 	instanceCount, _ := h.workflows.CountInstances(r.Context())
 
 	writeOK(w, map[string]interface{}{
-		"products_by_status": productCounts,
+		"items_by_status": itemCounts,
 		"category_count":     categoryCount,
 		"form_count":         formCount,
 		"submission_count":   submissionCount,

@@ -38,7 +38,7 @@ make frontend-dev     # Start Next.js on :3000
 
 - Session-based authentication with httpOnly cookies
 - Group-based permissions (admin, editor, viewer)
-- Products + Categories CRUD with soft deletes
+- Items + Categories CRUD with soft deletes
 - Forms engine (dynamic schema, validation, submissions)
 - Workflow engine (state machine, transitions, audit log)
 - Dark admin theme
