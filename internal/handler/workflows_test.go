@@ -45,7 +45,7 @@ func TestWorkflowsCreateDefinitionMissingName(t *testing.T) {
 	}
 
 	var result MutationResult
-	json.NewDecoder(w.Body).Decode(&result)
+	_ = json.NewDecoder(w.Body).Decode(&result)
 	if result.OK {
 		t.Error("expected ok=false")
 	}
