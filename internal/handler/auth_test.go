@@ -22,7 +22,7 @@ func TestAuthLoginMissingBody(t *testing.T) {
 	}
 
 	var body map[string]string
-	json.NewDecoder(w.Body).Decode(&body)
+	_ = json.NewDecoder(w.Body).Decode(&body)
 	if body["error"] != "Invalid request body" {
 		t.Errorf("unexpected error message: %s", body["error"])
 	}
@@ -42,7 +42,7 @@ func TestAuthLoginEmptyFields(t *testing.T) {
 	}
 
 	var result MutationResult
-	json.NewDecoder(w.Body).Decode(&result)
+	_ = json.NewDecoder(w.Body).Decode(&result)
 	if result.OK {
 		t.Error("expected ok=false for empty fields")
 	}
@@ -78,7 +78,7 @@ func TestAuthRegisterEmptyFields(t *testing.T) {
 	}
 
 	var result MutationResult
-	json.NewDecoder(w.Body).Decode(&result)
+	_ = json.NewDecoder(w.Body).Decode(&result)
 	if result.OK {
 		t.Error("expected ok=false for empty fields")
 	}
@@ -101,7 +101,7 @@ func TestAuthLogoutNoSession(t *testing.T) {
 	}
 
 	var result MutationResult
-	json.NewDecoder(w.Body).Decode(&result)
+	_ = json.NewDecoder(w.Body).Decode(&result)
 	if !result.OK {
 		t.Error("expected ok=true for logout without session")
 	}

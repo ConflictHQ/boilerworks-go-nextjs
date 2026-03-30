@@ -14,7 +14,7 @@ func TestRequirePermissionGranted(t *testing.T) {
 
 	inner := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"ok":true}`))
+		_, _ = w.Write([]byte(`{"ok":true}`))
 	})
 
 	handler := RequirePermission("items.view")(inner)
@@ -52,7 +52,7 @@ func TestRequirePermissionDenied(t *testing.T) {
 	}
 
 	var body map[string]string
-	json.NewDecoder(w.Body).Decode(&body)
+	_ = json.NewDecoder(w.Body).Decode(&body)
 	if body["error"] != "Forbidden" {
 		t.Errorf("expected error 'Forbidden', got '%s'", body["error"])
 	}
