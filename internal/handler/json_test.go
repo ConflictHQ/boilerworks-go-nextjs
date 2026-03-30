@@ -19,7 +19,7 @@ func TestWriteOK(t *testing.T) {
 	}
 
 	var body map[string]string
-	json.NewDecoder(w.Body).Decode(&body)
+	_ = json.NewDecoder(w.Body).Decode(&body)
 	if body["key"] != "value" {
 		t.Errorf("expected key=value, got %s", body["key"])
 	}
@@ -43,7 +43,7 @@ func TestWriteError(t *testing.T) {
 	}
 
 	var body map[string]string
-	json.NewDecoder(w.Body).Decode(&body)
+	_ = json.NewDecoder(w.Body).Decode(&body)
 	if body["error"] != "Not found" {
 		t.Errorf("expected 'Not found', got '%s'", body["error"])
 	}
@@ -58,7 +58,7 @@ func TestWriteMutationOK(t *testing.T) {
 	}
 
 	var result MutationResult
-	json.NewDecoder(w.Body).Decode(&result)
+	_ = json.NewDecoder(w.Body).Decode(&result)
 	if !result.OK {
 		t.Error("expected ok=true")
 	}
@@ -79,7 +79,7 @@ func TestWriteMutationErrors(t *testing.T) {
 	}
 
 	var result MutationResult
-	json.NewDecoder(w.Body).Decode(&result)
+	_ = json.NewDecoder(w.Body).Decode(&result)
 	if result.OK {
 		t.Error("expected ok=false")
 	}
