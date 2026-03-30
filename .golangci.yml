@@ -2,6 +2,8 @@ version: "2"
 run:
   timeout: 5m
   modules-download-mode: readonly
+  skip-dirs:
+    - frontend
 
 linters:
   enable:
@@ -16,10 +18,5 @@ linters:
   settings:
     gosec:
       excludes:
-        - G104 # unhandled errors in deferred calls
-        - G304 # file path from variable
-
-issues:
-  exclude-dirs:
-    - vendor
-    - frontend
+        - G104
+        - G304
