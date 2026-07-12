@@ -15,8 +15,8 @@ cd docker && docker compose up -d --build
 # Frontend: http://localhost:3000
 
 # Local development
-make run              # Start Go API on :8000
-make frontend-dev     # Start Next.js on :3000
+make run              # Start Go API on :8088
+make frontend-dev     # Start Next.js on :3004
 ```
 
 **Default credentials:** `admin@boilerworks.dev` / `password`
@@ -47,12 +47,14 @@ make frontend-dev     # Start Next.js on :3000
 
 ## Ports
 
-| Service | Port |
-|---------|------|
-| Go API | 8000 |
-| Next.js | 3000 |
-| PostgreSQL | 5432 |
-| Redis | 6379 |
+Docker Compose maps services to conventional host ports; local development uses different defaults (see `.env.example` and `frontend/package.json`).
+
+| Service | Docker (host) | Local dev |
+|---------|---------------|-----------|
+| Go API | 8000 | 8088 |
+| Next.js | 3000 | 3004 |
+| PostgreSQL | 5432 | 5447 |
+| Redis | 6379 | 6390 |
 
 ## Contributing
 

@@ -85,7 +85,9 @@ make docker-reset      # Reset with fresh volumes
 
 ## Ports
 
-- Go API: 8000
-- Next.js: 3000
-- PostgreSQL: 5432
-- Redis: 6379
+Docker host mappings vs local-dev defaults (`.env.example`, `frontend/package.json`):
+
+- Go API: 8000 (Docker) / 8088 (local)
+- Next.js: 3000 (Docker) / 3004 (local)
+- PostgreSQL: 5432 (Docker) / 5447 (local)
+- Redis: 6379 (Docker) / 6390 (local)
